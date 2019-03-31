@@ -1,14 +1,13 @@
-package truncatehtml
+package truncate
 
 import "testing"
 
-// TestTruncateHtml performs some basic sanity checks of TruncateHtml.
-func TestTruncateHtml(t *testing.T) {
+func TestHTML(t *testing.T) {
 	cases := []struct {
-		in       string
-		limit    int
-		ellipsis string
-		want     string
+		in     string
+		limit  int
+		suffix string
+		want   string
 	}{
 		{
 			"",
@@ -124,16 +123,22 @@ func TestTruncateHtml(t *testing.T) {
 			"",
 			"<h1><u>1234 &copy; 1</u></h1>",
 		},
+		{
+			"<H1>UPPERCASE TAGS<BR><BR></H1>",
+			100,
+			"",
+			"<H1>UPPERCASE TAGS<BR><BR></H1>",
+		},
 	}
 
 	for _, c := range cases {
-		out, err := TruncateHtml([]byte(c.in), c.limit, c.ellipsis)
+		out, err := HTML([]byte(c.in), c.limit, c.suffix)
 		got := string(out)
 		if err != nil {
-			t.Errorf(`unexpected error calling TruncateHtml(%q, 5, \"\"): %v; want: %q`, c.in, err, c.want)
+			t.Errorf(`unexpected error calling TruncateHtml(%q, 5, ""): %v; want: %q`, c.in, err, c.want)
 		}
 		if got != c.want {
-			t.Errorf("TruncateHtml(%q, %d, %q): got %q; want %q", c.in, c.limit, c.ellipsis, got, c.want)
+			t.Errorf("TruncateHtml(%q, %d, %q): got %q; want %q", c.in, c.limit, c.suffix, got, c.want)
 		}
 	}
 }
