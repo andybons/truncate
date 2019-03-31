@@ -1,3 +1,3 @@
-module github.com/andybons/truncatehtml
+module github.com/andybons/truncate
 
 go 1.12
