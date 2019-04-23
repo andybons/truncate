@@ -132,6 +132,10 @@ func HTML(buf []byte, maxlen int, suffix string) ([]byte, error) {
 
 		// Now find the expression sub-matches
 		matches := tagExpr.FindSubmatch(buf[bufPtr:])
+		if matches == nil {
+			bufPtr += 1
+			continue
+		}
 		tagName := strings.ToLower(string(matches[2]))
 
 		// Advance pointer to the end of the tag
